@@ -8,6 +8,10 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
+import androidx.work.workDataOf
 
 class MainActivity : AppCompatActivity() {
     private var points = 0
@@ -28,7 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         imgClap = findViewById(R.id.imgClap)
         textView1 = findViewById(R.id.textView1)
-//        circleLayout = findViewById(R.id.circleLayout)
         response = findViewById(R.id.response_edit_text)
         initialize()
     }
@@ -79,15 +82,36 @@ class MainActivity : AppCompatActivity() {
         response?.setText("")
         val toDisplay = firstNum.toString() + " + " + secondNum.toString() + " =  "
         textView1?.setText(toDisplay)
-        totalQuestion++;
     }
 
     fun correctResult() {
         points++
+        totalQuestion++
         playSound()
         animate()
 
         assignNum()
         resetView()
+    }
+
+    fun wrongAnswer() {
+        resetView()
+        totalQuestion++
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val message = "your score " + points + " out of " + totalQuestion
+        // Start the Worker if the timer is running
+        val timerWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<TimerWorker>()
+            .setInputData(
+                workDataOf(
+                    KEY_SCORE to message
+                )
+            ).build()
+
+        WorkManager.getInstance(applicationContext).enqueue(timerWorkRequest)
     }
 }
