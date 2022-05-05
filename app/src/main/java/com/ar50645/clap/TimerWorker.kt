@@ -20,7 +20,7 @@ class TimerWorker(context: Context, parameters: WorkerParameters) :
 
     override fun doWork(): Result {
 
-        // Get remaining milliseconds from MainActivity
+        // Get score from MainActivity
         val remainingMillis = inputData.getString(KEY_SCORE)
 
 

@@ -3,6 +3,7 @@ package com.ar50645.clap
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private var textView1: TextView? = null
     private var response: EditText? = null
     private var soundPool: SoundPool? = null
+    private var successSound = -1
+    private var failureSound = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,12 +55,9 @@ class MainActivity : AppCompatActivity() {
             .setAudioAttributes(attributes)
             .build()
 
-        soundPool!!.load(baseContext, R.raw.clap, 1)
+        successSound =  soundPool!!.load(baseContext, R.raw.clap, 1)
+        failureSound =  soundPool!!.load(baseContext, R.raw.wrong, 1)
 
-    }
-
-    fun playSound() {
-        soundPool?.play(1, 1F, 1F, 0, 0, 1F)
     }
 
     fun assignNum() {
@@ -66,13 +66,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun animate() {
-        val anim: Animation = AnimationUtils.loadAnimation(this, R.anim.animate)
-        imgClap?.startAnimation(anim)
-    }
-
     fun calculateClick(view: View) {
         val response = response?.text.toString()
+
+        if(TextUtils.isEmpty(response)) {
+            return;
+        }
+
         if(response.toInt() == firstNum + secondNum)
             correctResult()
         else
@@ -88,8 +88,14 @@ class MainActivity : AppCompatActivity() {
     fun correctResult() {
         points++
         totalQuestion++
-        playSound()
-        animate()
+
+        //play sound
+        soundPool?.play(successSound, 1F, 1F, 0, 0, 1F)
+
+        //animate
+        val anim: Animation = AnimationUtils.loadAnimation(this, R.anim.animate)
+        imgClap?.setBackgroundResource(R.drawable.clap);
+        imgClap?.startAnimation(anim)
 
         assignNum()
         resetView()
@@ -99,7 +105,12 @@ class MainActivity : AppCompatActivity() {
         assignNum()
         resetView()
         totalQuestion++
+        soundPool?.play(failureSound, 1F, 1F, 0, 0, 1F)
 
+        //animate
+        val anim: Animation = AnimationUtils.loadAnimation(this, R.anim.animate)
+        imgClap?.setBackgroundResource(R.drawable.tryagain);
+        imgClap?.startAnimation(anim)
     }
 
     override fun onStop() {
