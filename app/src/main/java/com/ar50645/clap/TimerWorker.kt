@@ -21,13 +21,13 @@ class TimerWorker(context: Context, parameters: WorkerParameters) :
     override fun doWork(): Result {
 
         // Get score from MainActivity
-        val remainingMillis = inputData.getString(KEY_SCORE)
+        val score = inputData.getString(KEY_SCORE)
 
 
         // Create notification channel for all notifications
         createTimerNotificationChannel()
 
-        createTimerNotification(remainingMillis.toString())
+        createTimerNotification(score.toString())
 
         return Result.success()
     }
