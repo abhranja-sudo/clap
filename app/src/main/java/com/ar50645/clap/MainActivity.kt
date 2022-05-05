@@ -73,9 +73,10 @@ class MainActivity : AppCompatActivity() {
 
     fun calculateClick(view: View) {
         val response = response?.text.toString()
-        if(response.toInt() == firstNum + secondNum) {
+        if(response.toInt() == firstNum + secondNum)
             correctResult()
-        }
+        else
+            wrongAnswer()
     }
 
     fun resetView() {
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun wrongAnswer() {
+        assignNum()
         resetView()
         totalQuestion++
 
