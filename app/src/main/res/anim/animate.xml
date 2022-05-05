@@ -6,9 +6,9 @@
         android:pivotX="50%"
         android:pivotY="50%"
         android:fromXScale="1.0"
-        android:toXScale="4.5"
+        android:toXScale="6.5"
         android:fromYScale="1.0"
-        android:toYScale="4.5"
+        android:toYScale="6.5"
         android:duration="700"
         android:startOffset="0" />
 
@@ -17,9 +17,9 @@
             "@android:anim/accelerate_decelerate_interpolator"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:fromXScale="4.5"
+        android:fromXScale="6.5"
         android:toXScale="1"
-        android:fromYScale="4.5"
+        android:fromYScale="6.5"
         android:toYScale="0.5"
         android:duration="700"
         android:startOffset="5" />
